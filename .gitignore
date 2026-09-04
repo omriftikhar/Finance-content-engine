@@ -10,3 +10,4 @@ tsconfig.tsbuildinfo
 # Local file store + generated artifacts
 data/store
 exports
+.vercel

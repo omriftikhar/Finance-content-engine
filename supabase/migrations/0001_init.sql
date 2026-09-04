@@ -168,7 +168,7 @@ create index if not exists channel_metrics_captured_idx on channel_metrics (capt
 create table if not exists episode_metrics (
   id          uuid primary key default gen_random_uuid(),
   episode_id  uuid not null references episodes(id) on delete cascade,
-  window      text not null,           -- h24 | h48 | d7
+  window_key  text not null,           -- h24 | h48 | d7 ("window" is a reserved word)
   views       numeric not null default 0,
   impressions numeric not null default 0,
   ctr         numeric,
@@ -178,7 +178,7 @@ create table if not exists episode_metrics (
   source      text not null default 'manual',
   captured_at timestamptz not null default now()
 );
-create unique index if not exists episode_metrics_window_idx on episode_metrics (episode_id, window);
+create unique index if not exists episode_metrics_window_idx on episode_metrics (episode_id, window_key);
 
 -- updated_at trigger for episodes
 create or replace function set_updated_at() returns trigger as $$
