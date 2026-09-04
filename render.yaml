@@ -1,0 +1,33 @@
+# Render.com blueprint for the Remotion render worker.
+# The worker renders episodes to MP4 (and optionally uploads to R2). It is a
+# background worker, not a web service. Trigger renders via a job queue or by
+# running `npm run worker:render <episodeId>` as a one-off job.
+services:
+  - type: worker
+    name: finance-render-worker
+    runtime: node
+    plan: standard          # rendering is CPU/RAM heavy; size up as needed
+    buildCommand: npm install
+    # Replace with your queue consumer. For a manual/one-off render, use a
+    # Render "Job" instead and pass the episode id as an argument.
+    startCommand: node -e "console.log('Render worker ready. Run: npm run worker:render <episodeId>')"
+    autoDeploy: false
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: STORE_DRIVER
+        value: supabase
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_PUBLIC_URL
+        sync: false

@@ -1,0 +1,7 @@
+out
+exports
+data/store
+worker
+supabase
+render.yaml
+remotion.config.ts

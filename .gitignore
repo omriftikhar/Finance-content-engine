@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env
+.env.local
+.DS_Store
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Local file store + generated artifacts
+data/store
+exports
