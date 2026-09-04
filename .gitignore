@@ -11,3 +11,7 @@ tsconfig.tsbuildinfo
 data/store
 exports
 .vercel
+
+# Supabase CLI local state
+supabase/.temp
+supabase/.branches

@@ -17,15 +17,26 @@ export interface R2Config {
 }
 
 export function getR2Config(): R2Config | null {
-  const {R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL} = process.env;
+  const {R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET} = process.env;
+  // Accept either R2_PUBLIC_BASE_URL (spec) or R2_PUBLIC_URL (legacy).
+  const publicUrl = process.env.R2_PUBLIC_BASE_URL ?? process.env.R2_PUBLIC_URL;
   if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY || !R2_BUCKET) return null;
   return {
     accountId: R2_ACCOUNT_ID,
     accessKeyId: R2_ACCESS_KEY_ID,
     secretAccessKey: R2_SECRET_ACCESS_KEY,
     bucket: R2_BUCKET,
-    publicUrl: R2_PUBLIC_URL,
+    publicUrl,
   };
+}
+
+export function isR2Configured(): boolean {
+  return getR2Config() !== null;
+}
+
+/** Deterministic object key: episodes/{episodeId}/{...path}. */
+export function episodeKey(episodeId: string, ...parts: string[]): string {
+  return ['episodes', episodeId, ...parts].join('/');
 }
 
 /** Uploads a local file to R2 and returns its public (or key) URL. */

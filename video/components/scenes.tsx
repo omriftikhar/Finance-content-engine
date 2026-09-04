@@ -4,6 +4,8 @@ import {THEME} from '../theme';
 import {SafeArea, Enter, Kicker, Headline, AnimatedNumber} from './primitives';
 import {Character} from './Character';
 import {BarChart, LineChart, ComparisonPanel} from './charts';
+import {HouseIcon, CarIcon, CreditCardIcon, DocumentIcon} from './icons';
+import {interpolate, useCurrentFrame} from 'remotion';
 
 /** Two-column layout: text left, visual right. */
 const Split: React.FC<{left: React.ReactNode; right: React.ReactNode}> = ({left, right}) => (
@@ -67,10 +69,64 @@ const NumbersScene: React.FC<{scene: Scene}> = ({scene}) => {
   );
 };
 
+/** A number that "slams" in with a scale overshoot — an expense impact. */
+const ImpactNumber: React.FC<{scene: Scene}> = ({scene}) => {
+  const frame = useCurrentFrame();
+  const n = scene.numbers[0];
+  const scale = interpolate(frame, [0, 6, 12], [1.6, 0.94, 1], {extrapolateRight: 'clamp'});
+  const shake = frame < 14 ? Math.sin(frame * 2) * (14 - frame) * 0.6 : 0;
+  return (
+    <div style={{transform: `scale(${scale}) translateX(${shake}px)`, textAlign: 'right'}}>
+      <div style={{fontSize: 30, color: THEME.inkDim, textTransform: 'uppercase', letterSpacing: 3}}>{n?.label}</div>
+      <div style={{fontFamily: THEME.fontDisplay, fontWeight: 800, fontSize: 150, color: THEME.warn, letterSpacing: -4}}>
+        {n ? (
+          <>
+            {'-'}
+            <AnimatedNumber value={n.value} prefix={n.prefix} decimals={n.decimals} money={n.prefix === '$'} durationInFrames={18} />
+          </>
+        ) : (
+          scene.headline
+        )}
+      </div>
+    </div>
+  );
+};
+
+const iconFor = (t: Scene['visualType']) => {
+  switch (t) {
+    case 'house':
+      return <HouseIcon size={420} />;
+    case 'car':
+      return <CarIcon size={440} />;
+    case 'creditCard':
+      return <CreditCardIcon size={420} />;
+    default:
+      return <Character emotion="stressed" size={440} />;
+  }
+};
+
+/** Expense hit: icon on the left, the cost slamming in on the right. */
 const ExpenseHitScene: React.FC<{scene: Scene}> = ({scene}) => (
   <Split
-    left={<TextBlock scene={scene} kicker="Expense" />}
-    right={<Character emotion={scene.characterEmotion ?? 'stressed'} size={460} />}
+    left={
+      <div>
+        <TextBlock scene={scene} kicker="Expense" />
+      </div>
+    }
+    right={
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24}}>
+        {iconFor(scene.visualType)}
+        {scene.numbers.length > 0 && <ImpactNumber scene={scene} />}
+      </div>
+    }
+  />
+);
+
+/** A source-document moment — builds trust by showing the paper trail. */
+const SourceDocScene: React.FC<{scene: Scene}> = ({scene}) => (
+  <Split
+    left={<TextBlock scene={scene} kicker="Source" />}
+    right={<DocumentIcon size={340} />}
   />
 );
 
@@ -113,6 +169,8 @@ export const SceneRenderer: React.FC<{scene: Scene}> = ({scene}) => {
     case 'car':
     case 'creditCard':
       return <ExpenseHitScene scene={scene} />;
+    case 'document':
+      return <SourceDocScene scene={scene} />;
     case 'barChart':
       return (
         <SafeArea style={{justifyContent: 'center'}}>

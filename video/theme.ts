@@ -14,6 +14,7 @@ export const THEME = {
   accentDim: '#1d7a48',
   warn: '#e5484d', // expense red
   gold: '#e6b450',
+  blue: '#4c8dff',
   gridLine: 'rgba(255,255,255,0.08)',
   fontDisplay: '"Archivo", "Arial Black", system-ui, sans-serif',
   fontBody: '"Inter", Arial, system-ui, sans-serif',
