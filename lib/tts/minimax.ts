@@ -117,13 +117,18 @@ export class MiniMaxTTSProvider implements TTSProvider {
     if (!hex) throw new MiniMaxTTSError('empty audio in response', true);
     const audio = Buffer.from(hex, 'hex');
     const durationMs = data.extra_info?.audio_length ?? Math.round((text.split(/\s+/).length / 2.6) * 1000);
+    const cost = (text.length / 1000) * this.cfg.costPer1kChars;
 
     return {
       provider: this.name,
+      model: this.cfg.model,
+      voiceId: opts.voice ?? this.cfg.defaultVoice,
       audio,
       format: opts.format ?? 'mp3',
       durationMs,
-      costUsd: (text.length / 1000) * this.cfg.costPer1kChars,
+      timestamps: [], // MiniMax T2A v2 REST does not return word alignment here
+      estimatedCostUsd: cost,
+      costUsd: cost,
     };
   }
 }

@@ -34,6 +34,11 @@ export const AssetSchema = z.object({
   sceneId: z.number().int().optional(),
   /** ms — for audio assets, drives audio-aware scene duration. */
   durationMs: z.number().nonnegative().optional(),
+  /** Word-level timing (ms) when the TTS provider supplies alignment. Used by
+   *  Remotion for caption/word highlighting synced to narration. */
+  timestamps: z
+    .array(z.object({text: z.string(), startMs: z.number(), endMs: z.number()}))
+    .optional(),
   createdAt: z.string().optional(),
 });
 export type Asset = z.infer<typeof AssetSchema>;

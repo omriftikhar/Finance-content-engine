@@ -52,6 +52,7 @@ export async function runVoice(episode: Episode): Promise<VoiceResult> {
       episodeId: episode.id,
       sceneId: scene.id,
       durationMs: result.durationMs,
+      timestamps: result.timestamps.length ? result.timestamps : undefined,
     });
 
     updated = upsertAsset(updated, asset);

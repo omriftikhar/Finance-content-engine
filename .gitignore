@@ -15,3 +15,6 @@ exports
 # Supabase CLI local state
 supabase/.temp
 supabase/.branches
+
+# Voice test outputs
+data/voice-tests

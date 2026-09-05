@@ -143,3 +143,58 @@ export const Caption: React.FC<{text: string}> = ({text}) => {
     </div>
   );
 };
+
+export interface WordTiming {
+  text: string;
+  startMs: number;
+  endMs: number;
+}
+
+/**
+ * Karaoke-style caption driven by narration word timings. The currently-spoken
+ * word (per the audio timeline) is highlighted, so captions track the real
+ * narration instead of appearing all at once. Falls back to a plain caption when
+ * no timings are provided.
+ */
+export const WordCaption: React.FC<{text: string; timings?: WordTiming[]}> = ({text, timings}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  if (!timings || timings.length === 0) return <Caption text={text} />;
+  const nowMs = (frame / fps) * 1000;
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, bottom: 70, display: 'flex', justifyContent: 'center'}}>
+      <div
+        style={{
+          maxWidth: 1400,
+          textAlign: 'center',
+          fontSize: 40,
+          lineHeight: 1.3,
+          fontWeight: 600,
+          background: 'rgba(0,0,0,0.55)',
+          padding: '14px 28px',
+          borderRadius: 10,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0 10px',
+          justifyContent: 'center',
+        }}
+      >
+        {timings.map((w, i) => {
+          const active = nowMs >= w.startMs && nowMs < w.endMs;
+          const spoken = nowMs >= w.endMs;
+          return (
+            <span
+              key={i}
+              style={{
+                color: active ? THEME.accent : spoken ? THEME.ink : THEME.inkDim,
+                transition: 'color 0.1s',
+              }}
+            >
+              {w.text}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+};

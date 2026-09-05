@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Audio, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Episode, Scene} from '@/lib/schemas';
 import {VIDEO} from './theme';
-import {Stage, Caption} from './components/primitives';
+import {Stage, Caption, WordCaption, type WordTiming} from './components/primitives';
 import {SceneRenderer} from './components/scenes';
 
 /**
@@ -32,11 +32,12 @@ function useCameraTransform(scene: Scene, durationInFrames: number): string {
   }
 }
 
-const SceneBlock: React.FC<{scene: Scene; showCaptions: boolean; durationInFrames: number}> = ({
-  scene,
-  showCaptions,
-  durationInFrames,
-}) => {
+const SceneBlock: React.FC<{
+  scene: Scene;
+  showCaptions: boolean;
+  durationInFrames: number;
+  timings?: WordTiming[];
+}> = ({scene, showCaptions, durationInFrames, timings}) => {
   const frame = useCurrentFrame();
   const fadeIn = interpolate(frame, [0, 8], [0, 1], {extrapolateRight: 'clamp'});
   const fadeOut = interpolate(frame, [durationInFrames - 8, durationInFrames], [1, 0.0], {
@@ -51,7 +52,7 @@ const SceneBlock: React.FC<{scene: Scene; showCaptions: boolean; durationInFrame
           <SceneRenderer scene={scene} />
         </Stage>
       </AbsoluteFill>
-      {showCaptions && <Caption text={scene.narration} />}
+      {showCaptions ? <WordCaption text={scene.narration} timings={timings} /> : null}
     </AbsoluteFill>
   );
 };
@@ -67,6 +68,8 @@ export interface FinanceEpisodeProps {
   sfxSrc?: Record<string, string>;
   /** Base music volume (0–1) before ducking. */
   musicVolume?: number;
+  /** Per-scene narration word timings for karaoke-style captions. */
+  timingsBySceneId?: Record<number, WordTiming[]>;
 }
 
 /** Music bed ducked under narration: lower volume while any scene has audio. */
@@ -93,6 +96,7 @@ export const FinanceEpisode: React.FC<FinanceEpisodeProps> = ({
   musicSrc,
   sfxSrc = {},
   musicVolume = 0.5,
+  timingsBySceneId = {},
 }) => {
   const {fps} = useVideoConfig();
   const total = totalDurationInFrames(episode, fps);
@@ -116,7 +120,12 @@ export const FinanceEpisode: React.FC<FinanceEpisodeProps> = ({
         const firstSfx = scene.sfx[0] ? sfxSrc[scene.sfx[0]] : undefined;
         const node = (
           <Sequence key={scene.id} from={from} durationInFrames={duration}>
-            <SceneBlock scene={scene} showCaptions={showCaptions} durationInFrames={duration} />
+            <SceneBlock
+              scene={scene}
+              showCaptions={showCaptions}
+              durationInFrames={duration}
+              timings={timingsBySceneId[scene.id]}
+            />
             {audioPath ? <Audio src={staticFile(audioPath)} /> : null}
             {firstSfx ? <Audio src={staticFile(firstSfx)} volume={0.6} /> : null}
           </Sequence>
