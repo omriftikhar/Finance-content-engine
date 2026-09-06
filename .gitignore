@@ -21,3 +21,5 @@ data/voice-tests
 
 # Generated narration audio (regenerate via worker/pilot-narrate.ts)
 public/narration
+
+.claude/
