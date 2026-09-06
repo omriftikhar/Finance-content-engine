@@ -1,0 +1,26 @@
+{
+  "note": "All audio in this library is ORIGINAL, generated procedurally by worker/audio/synth.ts (pure math: sine/triangle/noise + envelopes). It contains NO third-party samples or copyrighted material.",
+  "license": "CC0-1.0 (public-domain-equivalent, original generation)",
+  "sfx": {
+    "source": "generated",
+    "generator": "worker/audio/synth.ts",
+    "count": 19,
+    "names": ["money_in","money_out","coin","counter","tick","impact_soft","impact_heavy","whoosh","swipe","card_swipe","pop","paper","receipt","notification","chart_reveal","success","failure","riser","transition"],
+    "status": "PLACEHOLDER — functional but simple; replace with professionally-produced licensed SFX for final channel quality"
+  },
+  "music": {
+    "source": "generated",
+    "generator": "worker/audio/synth.ts (musicBed)",
+    "moods": ["documentary","tension","optimism","curiosity"],
+    "status": "PLACEHOLDER — simple evolving pad; replace with a properly-licensed / royalty-free documentary track before publishing. Store real track license + source here."
+  },
+  "narration": {
+    "provider": "Soniox TTS v2 (tts-rt-v2)",
+    "voice": "Daniel (US English male)",
+    "license": "Generated via Soniox paid API under the account's Soniox terms; usage rights per Soniox subscription."
+  },
+  "replacementSlots": {
+    "music": "Drop a licensed .wav/.mp3 and record { title, artist, source, licenseType, licenseUrl, purchaseRef } here.",
+    "sfx": "Same — never label a downloaded track 'copyright free' without a verifiable license."
+  }
+}

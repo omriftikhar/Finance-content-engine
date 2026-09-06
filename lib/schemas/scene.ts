@@ -32,13 +32,16 @@ export type VisualType = z.infer<typeof VisualType>;
 
 export const CHARACTER_EMOTIONS = [
   'neutral',
+  'confident',
   'happy',
   'confused',
+  'concerned',
   'stressed',
   'shocked',
   'thinking',
-  'driving',
   'working',
+  'driving',
+  'checkingBank',
   'checkingBills',
   'celebrating',
 ] as const;

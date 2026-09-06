@@ -2,6 +2,7 @@ import React from 'react';
 import {Composition} from 'remotion';
 import type {Episode} from '@/lib/schemas';
 import {FinanceEpisode, totalDurationInFrames, type FinanceEpisodeProps} from './FinanceEpisode';
+import {QualityProof, qualityProofDuration} from './QualityProof';
 import {VIDEO} from './theme';
 import {pilotEpisode} from '@/data/pilot';
 
@@ -11,6 +12,7 @@ const Comp = FinanceEpisode as unknown as React.FC<Record<string, unknown>>;
 
 export const RemotionRoot: React.FC = () => {
   return (
+    <>
     <Composition
       id="FinanceEpisode"
       component={Comp}
@@ -28,5 +30,14 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames: totalDurationInFrames((props as {episode: Episode}).episode),
       })}
     />
+      <Composition
+        id="QualityProof"
+        component={QualityProof}
+        width={VIDEO.width}
+        height={VIDEO.height}
+        fps={VIDEO.fps}
+        durationInFrames={qualityProofDuration(VIDEO.fps)}
+      />
+    </>
   );
 };

@@ -29,6 +29,11 @@ function mouthFor(emotion: CharacterEmotion): React.ReactNode {
     case 'stressed':
     case 'checkingBills':
       return <path d="M 42 86 Q 60 74 78 86" stroke="#3a2a20" strokeWidth={4} fill="none" />;
+    case 'concerned':
+    case 'checkingBank':
+      return <path d="M 44 85 Q 60 78 76 85" stroke="#3a2a20" strokeWidth={4} fill="none" />;
+    case 'confident':
+      return <path d="M 44 80 Q 60 90 76 80" stroke="#3a2a20" strokeWidth={5} fill="none" />;
     case 'confused':
       return <path d="M 44 84 Q 56 80 68 86 Q 74 88 76 84" stroke="#3a2a20" strokeWidth={4} fill="none" />;
     case 'thinking':
@@ -39,7 +44,8 @@ function mouthFor(emotion: CharacterEmotion): React.ReactNode {
 }
 
 function browsFor(emotion: CharacterEmotion): React.ReactNode {
-  const stressed = emotion === 'stressed' || emotion === 'shocked' || emotion === 'confused';
+  const stressed =
+    emotion === 'stressed' || emotion === 'shocked' || emotion === 'confused' || emotion === 'concerned';
   return (
     <>
       <path

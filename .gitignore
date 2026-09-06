@@ -23,3 +23,7 @@ data/voice-tests
 public/narration
 
 .claude/
+
+# Generated audio library (regenerate via worker/audio/synth.ts) — keep LICENSE.json
+data/audio-lib/sfx
+data/audio-lib/music
