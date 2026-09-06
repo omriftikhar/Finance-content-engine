@@ -3,6 +3,7 @@ import {Composition} from 'remotion';
 import type {Episode} from '@/lib/schemas';
 import {FinanceEpisode, totalDurationInFrames, type FinanceEpisodeProps} from './FinanceEpisode';
 import {QualityProof, qualityProofDuration} from './QualityProof';
+import {VisualStyleTest, visualStyleTestDuration} from './VisualStyleTest';
 import {VIDEO} from './theme';
 import {pilotEpisode} from '@/data/pilot';
 
@@ -37,6 +38,14 @@ export const RemotionRoot: React.FC = () => {
         height={VIDEO.height}
         fps={VIDEO.fps}
         durationInFrames={qualityProofDuration(VIDEO.fps)}
+      />
+      <Composition
+        id="VisualStyleTest"
+        component={VisualStyleTest}
+        width={VIDEO.width}
+        height={VIDEO.height}
+        fps={VIDEO.fps}
+        durationInFrames={visualStyleTestDuration(VIDEO.fps)}
       />
     </>
   );

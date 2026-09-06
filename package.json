@@ -12,6 +12,7 @@
     "remotion:studio": "remotion studio video/index.ts",
     "remotion:render": "remotion render video/index.ts FinanceEpisode out/episode.mp4",
     "worker:render": "tsx --tsconfig tsconfig.worker.json worker/render.ts",
+    "worker:visual-style-test": "tsx --tsconfig tsconfig.worker.json worker/build-visual-style-test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

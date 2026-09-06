@@ -27,3 +27,7 @@ public/narration
 # Generated audio library (regenerate via worker/audio/synth.ts) — keep LICENSE.json
 data/audio-lib/sfx
 data/audio-lib/music
+
+# Generated image assets (regenerate via image provider)
+public/assets/generated
+data/image-cache
