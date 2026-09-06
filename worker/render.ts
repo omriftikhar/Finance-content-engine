@@ -71,7 +71,18 @@ async function renderEpisode(episodeId: string, smoke: boolean): Promise<void> {
     const serveUrl = await withRetry('bundle', () =>
       bundle({entryPoint: path.join(process.cwd(), 'video', 'index.ts'), webpackOverride}),
     );
-    const inputProps = {episode, showCaptions: true, audioBySceneId: {}};
+    // Wire narration audio + word timings from the episode's audio assets.
+    const audioBySceneId: Record<number, string> = {};
+    const timingsBySceneId: Record<number, Array<{text: string; startMs: number; endMs: number}>> = {};
+    for (const a of episode.assets) {
+      if (a.type === 'audio' && a.sceneId != null && a.localPath) {
+        audioBySceneId[a.sceneId] = a.localPath; // public-relative path for staticFile()
+        if (a.timestamps?.length) timingsBySceneId[a.sceneId] = a.timestamps;
+      }
+    }
+    const musicSrc = process.env.NARRATION_MUSIC ?? undefined; // optional royalty-free bed
+    const inputProps = {episode, showCaptions: true, audioBySceneId, timingsBySceneId, musicSrc};
+    console.log(`[worker] audio wired for ${Object.keys(audioBySceneId).length} scenes`);
     const composition = await selectComposition({serveUrl, id: 'FinanceEpisode', inputProps});
 
     // 2) Render MP4.

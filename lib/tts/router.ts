@@ -16,7 +16,7 @@ export function buildSoniox(): TTSProvider | null {
     apiKey: process.env.SONIOX_API_KEY,
     baseUrl: process.env.SONIOX_TTS_BASE_URL ?? 'https://tts-rt.soniox.com',
     modelsBaseUrl: process.env.SONIOX_API_BASE_URL ?? 'https://api.soniox.com',
-    model: process.env.SONIOX_TTS_MODEL ?? 'tts-rt-v1',
+    model: process.env.SONIOX_TTS_MODEL ?? 'tts-rt-v2',
     defaultVoice: process.env.SONIOX_TTS_VOICE ?? 'Daniel',
     language: process.env.SONIOX_TTS_LANGUAGE ?? 'en',
     costPer1kChars: Number(process.env.SONIOX_TTS_COST_PER_1K ?? 0.03),

@@ -12,7 +12,7 @@ import type {AudioFormat, TTSOptions, TTSProvider, TTSResult} from './types';
  *   `timestamps` is left empty here — the field is preserved for when/if the API
  *   provides it or we derive alignment via STT.
  *
- * Model:  tts-rt-v1
+ * Model:  tts-rt-v2 (confirmed live via GET /v1/tts-models)
  * US English voices (from GET /v1/tts-models): Maya, Daniel, Noah, Nina, Emma,
  *   Jack, Adrian, Claire, Grace, Owen, Mina, Kenji.
  */
